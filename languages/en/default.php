@@ -10,5 +10,4 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-
-\Isotope\Model\Shipping::registerModelType('zones_advanced', 'IntelligentSpark\Model\Shipping\ZonesAdvanced');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.zones_advanced']    = array('Advanced Zone-Based Shipping', 'Defines special zones and offers additional pricing features.');
