@@ -10,9 +10,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-if (class_exists('NamespaceClassLoader')) {
-    /**
-     * Register PSR-0 namespace
-     */
-    NamespaceClassLoader::add('IntelligentSpark', 'system/modules/isotope_shipping_zones_advanced/library');
-}
+
+/**
+ * Register PSR-0 namespace
+ */
+NamespaceClassLoader::add('IntelligentSpark', 'system/modules/isotope_shipping_zones_advanced/library');
