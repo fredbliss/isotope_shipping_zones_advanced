@@ -11,9 +11,6 @@
  */
 
 
-$GLOBALS['TL_DCA']['tl_iso_shipping']['palettes']['zones_advanced'] = '';
-
-
 /**
  * Table tl_iso_shipping
  */
