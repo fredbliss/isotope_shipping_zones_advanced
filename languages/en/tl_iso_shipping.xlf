@@ -2,11 +2,35 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
     <file datatype="plaintext" original="system/modules/isotope_shipping_zones_advanced/languages/en/tl_iso_shipping.xlf" source-language="en">
         <body>
-            <trans-unit id="tl_iso_shipping.po_number.0">
-                <source>Purchase Order ID</source>
+            <trans-unit id="tl_iso_shipping.upgrade_options.0">
+                <source>Shipping Service Upgrade Options</source>
             </trans-unit>
-            <trans-unit id="tl_iso_shipping.po_number.1">
-                <source>Purchase Order ID as entered by customer for payment.</source>
+            <trans-unit id="tl_iso_shipping.upgrade_options.1">
+                <source>Create one or more upgrade options for shipping.</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.or_pricing.0">
+                <source>"OR" Pricing</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.or_pricing.1">
+                <source>Used to define a "whichever is greater" or "whichever is less" pricing mechanism for shipping.</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.alternative_price.0">
+                <source>Alternative Price</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.alternative_price.1">
+                <source>The alternative price</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.alternative_price_logic.0">
+                <source>Pricing Logic</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.alternative_price_logic.1">
+                <source>Less that or greater than logic type.</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.alternative_price_logic_ref.0">
+                <source>Whichever is less</source>
+            </trans-unit>
+            <trans-unit id="tl_iso_shipping.alternative_price_logic_ref.1">
+                <source>Whichever is greater</source>
             </trans-unit>
         </body>
     </file>
