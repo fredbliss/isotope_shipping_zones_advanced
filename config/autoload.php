@@ -11,7 +11,10 @@
  */
 
 
-/**
- * Register PSR-0 namespace
- */
-NamespaceClassLoader::add('IntelligentSpark', 'system/modules/isotope_shipping_zones_advanced/library');
+if (class_exists('NamespaceClassLoader')) {
+    /**
+     * Register PSR-0 namespace
+     */
+    NamespaceClassLoader::add('IntelligentSpark', 'system/modules/isotope_shipping_zones_advanced/library');
+
+}

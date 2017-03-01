@@ -12,7 +12,8 @@
 
 namespace IntelligentSpark\Model\Shipping;
 
-use Isotope\Interfaces\IsotopeProductCollection;
+use Haste\Units\Mass\Weight;
+use Isotope\Interfaces\IsotopeProductCollection as IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
@@ -23,8 +24,25 @@ use Isotope\Model\Shipping;
  *
  * @property string flatCalculation
  */
-class ZonesAdvanced extends Shipping implements IsotopeShipping
+class ZonesAdvanced extends Shipping
 {
+    /**
+     * Returns the ID of this shipping method.
+     *
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Return boolean flag if the shipping method is available
+     * @return  bool
+     */
+    public function isAvailable() {
+        return true;
+    }
+
     /**
      * Return calculated price for this shipping method
      * @return float
@@ -101,10 +119,12 @@ class ZonesAdvanced extends Shipping implements IsotopeShipping
     public function getAdjustedSubTotal($fltSubtotal)
     {
 
-        $arrProducts = (TL_MODE=='FE' ? $this->Isotope->Cart->getProducts() : $this->Isotope->Order->getProducts());
+        $arrItems = (TL_MODE=='FE' ? Isotope::getCart()->getItems() : Isotope::getCart()->getDraftOrder()->getItems());
 
-        foreach($arrProducts as $objProduct)
+        foreach($arrItems as $objItem)
         {
+            $objProduct = $objItem->getProduct();
+
             if($objProduct->shipping_exempt)
             {
                 $fltSubtotal -= ($objProduct->price * $objProduct->quantity_requested);
@@ -115,6 +135,37 @@ class ZonesAdvanced extends Shipping implements IsotopeShipping
         return $fltSubtotal;
     }
 
+    /**
+     * Return information or advanced features in the backend.
+     * Use this function to present advanced features or basic shipping information for an order in the backend.
+     * @param integer
+     * @return string
+     */
+    public function backendInterface($orderId) {
+
+    }
+
+    /**
+     * Return the checkout review information.
+     *
+     * Use this to return custom checkout information about this shipping module.
+     * Example: Information about tracking codes.
+     * @return string
+     */
+    public function checkoutReview() {
+
+    }
+
+    /**
+     * Get the checkout surcharge for this shipping method
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Shipping|null
+     */
+    public function getSurcharge(IsotopeProductCollection $objCollection) {
+
+    }
 
     /**
      * Initialize the module options DCA in backend
@@ -158,16 +209,5 @@ class ZonesAdvanced extends Shipping implements IsotopeShipping
         return '';
     }
 
-    /**
-     * Get the checkout surcharge for this shipping method
-     */
-    public function getSurcharge($objCollection)
-    {
-        return $this->Isotope->calculateSurcharge(
-            $this->price,
-            ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'.(intval($this->price)==0 ? ' - FREE!' : '')),
-            $this->arrData['tax_class'],
-            $objCollection->getProducts(),
-            $this);
-    }
+
 }

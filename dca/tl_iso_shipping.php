@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping']['fields']['alternative_price_logic'] = arr
     'inputType'		=> 'select',
     'options'		=> array(1,2),
     'eval'			=> array('mandatory'=>true),
-    'reference'		=> &$GLOBALS['TL_LANG']['tl_iso_shipping']['alternative_price_logic_options'],
+    'reference'		=> &$GLOBALS['TL_LANG']['tl_iso_shipping']['alternative_price_logic_ref'],
     'sql'           => "int(10) unsigned NOT NULL default '0'"
 );
 
