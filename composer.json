@@ -29,6 +29,13 @@
       ]
     }
   },
+  "extra": {
+    "contao": {
+      "sources": {
+        "": "system/modules/isotope_purchaseorder"
+      }
+    }
+  },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
