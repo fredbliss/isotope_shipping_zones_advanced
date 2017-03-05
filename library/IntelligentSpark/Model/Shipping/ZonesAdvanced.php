@@ -150,7 +150,7 @@ class ZonesAdvanced extends Shipping
         $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
         $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['shipping_method_message'];
         $objTemplate->options         = $objWidget->parse();
-        $objTemplate->shippingMethods11  = $this->modules;
+        $objTemplate->shippingMethods = $this->modules;
 
         return $objTemplate->parse();
     }
