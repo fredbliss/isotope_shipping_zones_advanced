@@ -23,8 +23,7 @@ class ShippingUpgrades {
      * @return void
      */
     public function shippingMethodSubmit($objCheckoutStep) {
-        var_dump(\Input::post('shipping'));
-        exit;
+        //\Input::post('shipping'));
     }
 
     /**
