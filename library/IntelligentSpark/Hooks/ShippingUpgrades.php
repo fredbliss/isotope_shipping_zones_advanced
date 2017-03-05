@@ -13,6 +13,7 @@
 namespace IntelligentSpark\Hooks;
 
 use Isotope\Isotope;
+use Isotope\Template;
 use IntelligentSpark\CheckoutStep;
 
 class ShippingUpgrades {
