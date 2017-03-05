@@ -14,4 +14,4 @@
 \Isotope\Model\Shipping::registerModelType('zones_advanced', 'IntelligentSpark\Model\Shipping\ZonesAdvanced');
 
 $GLOBALS['ISO_HOOKS']['shippingMethodSubmit'][] = ['IntelligentSpark\Hooks\ShippingUpgrades','shippingMethodSubmit'];
-$GLOBALS['ISO_HOOKS']['appendShippingLabel'][] = ['IntelligentSpark\Hooks\ShippingUpgrades','appendShippingLabel'];
+$GLOBALS['ISO_HOOKS']['renderUpgradeOptions'][] = ['IntelligentSpark\Hooks\ShippingUpgrades','renderUpgradeOptions'];

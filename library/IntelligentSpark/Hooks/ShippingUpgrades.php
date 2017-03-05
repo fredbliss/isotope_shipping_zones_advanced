@@ -23,7 +23,8 @@ class ShippingUpgrades {
      * @return void
      */
     public function shippingMethodSubmit($objCheckoutStep) {
-
+        var_dump(\Input::post('shipping'));
+        exit;
     }
 
     /**
@@ -31,7 +32,7 @@ class ShippingUpgrades {
      * @param $objShippingModule
      * @return string;
      */
-    public function appendShippingLabel($objCheckoutStep,$objShippingModule) {
+    public function renderUpgradeOptions($objCheckoutStep,$objShippingModule) {
 
         $objTemplate = new Template('iso_checkout_step_shipping_upgrades');
 
