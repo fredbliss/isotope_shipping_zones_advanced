@@ -36,14 +36,6 @@ class ZonesAdvanced extends Shipping
     }
 
     /**
-     * Return boolean flag if the shipping method is available
-     * @return  bool
-     */
-    public function isAvailable() {
-        return true;
-    }
-
-    /**
      * Return calculated price for this shipping method
      * @return float
      */
@@ -194,48 +186,5 @@ class ZonesAdvanced extends Shipping
     public function getSurcharge(IsotopeProductCollection $objCollection) {
 
     }
-
-    /**
-     * Initialize the module options DCA in backend
-     *
-     * @access public
-     * @return string
-     */
-    public function moduleOptionsLoad()
-    {
-        $GLOBALS['TL_DCA']['tl_iso_shipping']['palettes']['default'] = '{general_legend},name,description;{config_legend},rate,minimum_total,maximum_total';
-    }
-
-
-    /**
-     * List module options in backend
-     *
-     * @access public
-     * @return string
-     */
-    public function moduleOptionsList($row)
-    {
-        return '
-<div class="cte_type ' . $key . '"><strong>' . $row['name'] . '</strong></div>
-<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h52' : '') . ' block">
-'. $GLOBALS['TL_LANG']['tl_iso_shipping']['option_type'][0] . ': ' . $GLOBALS['TL_LANG']['tl_iso_shipping']['types'][$row['option_type']] . '<br><br>' . $row['rate'] .' for '. $row['upper_limit'] . ' based on ' . $row['dest_country'] .', '. $row['dest_region'] . ', ' . $row['dest_zip'] . '</div>' . "\n";
-    }
-
-    public function getShippingOptions(&$objModule)
-    {
-        $arrOptions = deserialize($this->upgrade_options,true);
-
-        if(count($arrOptions))
-        {
-            $objTemplate = new IsotopeTemplate('iso_checkout_shipping_options');
-            $objTemplate->module_id = $this->id;
-            $objTemplate->options = $arrOptions;
-
-            return $objTemplate->parse();
-        }
-
-        return '';
-    }
-
 
 }
