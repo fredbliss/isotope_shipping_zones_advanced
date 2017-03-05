@@ -74,43 +74,6 @@ class ZonesAdvanced extends Shipping
         return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
     }
 
-    /*public function calculateShippingRate($intPid, $fltCartSubTotal)
-    {
-        $objRates = $this->Database->prepare("SELECT * FROM tl_iso_shipping WHERE pid=?")
-            ->execute($intPid);
-
-        if($objRates->numRows < 1)
-        {
-            return 0;
-        }
-
-        $arrData = $objRates->fetchAllAssoc();
-
-        //get the basic rate - calculate it based on group '0' first, which is the default, then any group NOT 0.
-        foreach($arrData as $row)
-        {
-            //determine value ranges
-            if((float)$row['minimum_total']>0 && $fltCartSubTotal>=(float)$row['minimum_total'])
-            {
-                if($fltCartSubTotal<=(float)$row['maximum_total'] || $row['maximum_total']==0)
-                {
-                    $fltRate = $row['rate'];
-                }
-            }
-            elseif((float)$row['maximum_total']>0 && $fltCartSubTotal<=(float)$row['maximum_total'])
-            {
-                if($fltCartSubTotal>=(float)$row['minimum_total'])
-                {
-                    $fltRate = $row['rate'];
-                }
-            }
-
-        }
-
-        return $fltRate;
-
-    }*/
-
     /**
      * shipping exempt items should be subtracted from the subtotal
      * @param float
@@ -133,6 +96,71 @@ class ZonesAdvanced extends Shipping
         }
 
         return $fltSubtotal;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function generate()
+    {
+        $this->initializeModules();
+
+        if (empty($this->modules)) {
+            $this->blnError = true;
+
+            \System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+
+            /** @var Template|\stdClass $objTemplate */
+            $objTemplate           = new Template('mod_message');
+            $objTemplate->class    = 'shipping_method';
+            $objTemplate->hl       = 'h2';
+            $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
+            $objTemplate->type     = 'error';
+            $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['noShippingModules'];
+
+            return $objTemplate->parse();
+        }
+
+        /** @var \Widget $objWidget */
+        $objWidget = new $GLOBALS['TL_FFL']['radio'](
+            [
+                'id'          => $this->getStepClass(),
+                'name'        => $this->getStepClass(),
+                'mandatory'   => true,
+                'options'     => $this->options,
+                'value'       => Isotope::getCart()->shipping_id,
+                'storeValues' => true,
+                'tableless'   => true,
+            ]
+        );
+
+        // If there is only one shipping method, mark it as selected by default
+        if (count($this->modules) === 1) {
+            $objModule        = reset($this->modules);
+            $objWidget->value = $objModule->id;
+            Isotope::getCart()->setShippingMethod($objModule);
+        }
+
+        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+            $objWidget->validate();
+
+            if (!$objWidget->hasErrors()) {
+                Isotope::getCart()->setShippingMethod($this->modules[$objWidget->value]);
+            }
+        }
+
+        if (!Isotope::getCart()->hasShipping() || !isset($this->modules[Isotope::getCart()->shipping_id])) {
+            $this->blnError = true;
+        }
+
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate                  = new Template('iso_checkout_shipping_method');
+        $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
+        $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['shipping_method_message'];
+        $objTemplate->options         = $objWidget->parse();
+        $objTemplate->shippingMethods11  = $this->modules;
+
+        return $objTemplate->parse();
     }
 
     /**

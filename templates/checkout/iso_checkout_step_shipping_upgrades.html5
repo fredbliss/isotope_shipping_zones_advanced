@@ -1,0 +1,7 @@
+<label for="ctrl_upgrade_<?php echo $this->module_id; ?>"></label>
+<select id="ctrl_upgrade_<?php echo $this->module_id; ?>" name="shipping[upgrade]">
+<option value="" selected>(upgrade my shipping)</option>
+<?php foreach($this->options as $i=>$upgrade): ?>
+<option value="<?php echo $upgrade['value']; ?>"><?php echo $upgrade['label']; ?></option>
+<?php endforeach; ?>
+</select>

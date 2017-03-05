@@ -18,3 +18,11 @@ if (class_exists('NamespaceClassLoader')) {
     NamespaceClassLoader::add('IntelligentSpark', 'system/modules/isotope_shipping_zones_advanced/library');
 
 }
+
+/**
+ * Register the templates
+ */
+TemplateLoader::addFiles(array
+(
+    'iso_checkout_step_shipping_upgrade'     => 'system/modules/checkout/iso_checkout_step_shipping_upgrade/templates/checkout'
+));
