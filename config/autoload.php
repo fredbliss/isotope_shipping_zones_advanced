@@ -24,5 +24,5 @@ if (class_exists('NamespaceClassLoader')) {
  */
 TemplateLoader::addFiles(array
 (
-    'iso_checkout_step_shipping_upgraded'     => 'system/modules/isotope_shipping_zones_advanced/templates/checkout'
+    'iso_checkout_step_shipping_upgrades'     => 'system/modules/isotope_shipping_zones_advanced/templates/checkout'
 ));
