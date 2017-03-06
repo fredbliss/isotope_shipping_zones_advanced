@@ -14,7 +14,6 @@ namespace IntelligentSpark\Hooks;
 
 use Isotope\Isotope;
 use Isotope\Template;
-use IntelligentSpark\CheckoutStep;
 
 class ShippingUpgrades {
 
@@ -24,6 +23,7 @@ class ShippingUpgrades {
      */
     public function shippingMethodSubmit($objCheckoutStep) {
         //\Input::post('shipping'));
+
     }
 
     /**
@@ -31,14 +31,24 @@ class ShippingUpgrades {
      * @param $objShippingModule
      * @return string;
      */
-    public function renderUpgradeOptions($objCheckoutStep,$objShippingModule) {
+    public function getShippingUpgrades($objCheckoutStep,$arrModules) {
 
         $objTemplate = new Template('iso_checkout_step_shipping_upgrades');
 
-        $objTemplate->module_id = $objShippingModule->id;
-        $objTemplate->options = deserialize($objShippingModule->upgrade_options,true);
+        $objTemplate->modules = $arrModules;
 
-        return $objTemplate->parse();
+        $arrUpgrades = array();
+
+        foreach($arrModules as $module) {
+            $arrUpgrade = array();
+            $arrUpgrade['options'] = deserialize($module->upgrade_options,true);
+
+            $arrUpgrades[] = $arrUpgrade;
+        }
+
+        $objTemplate->upgrades = $arrUpgrades;
+
+        return array();
     }
 
     public function preCheckout($objOrder, $objModule) {
