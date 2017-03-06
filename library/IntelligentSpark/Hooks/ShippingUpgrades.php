@@ -31,22 +31,26 @@ class ShippingUpgrades {
      * @param $objShippingModule
      * @return string;
      */
-    public function getShippingUpgrades($objCheckoutStep,$arrModules) {
+    public function getShippingUpgrades($objCheckoutStep,$intModuleId) {
 
         $objTemplate = new Template('iso_checkout_step_shipping_upgrades');
 
-        $objTemplate->modules = $arrModules;
-
         $arrUpgrades = array();
+        $arrModules = $objCheckoutStep->modules;
 
         foreach($arrModules as $module) {
+            if(empty($module->upgrade_options))
+                continue;
+
             $arrUpgrade = array();
-            $arrUpgrade['options'] = deserialize($module->upgrade_options,true);
+
+            $arrUpgrade = deserialize($module->upgrade_options,true);
 
             $arrUpgrades[] = $arrUpgrade;
         }
 
-        $objTemplate->upgrades = $arrUpgrades;
+        $objTemplate->module_id = $intModuleId;
+        $objTemplate->options = $arrUpgrades;
 
         return array();
     }

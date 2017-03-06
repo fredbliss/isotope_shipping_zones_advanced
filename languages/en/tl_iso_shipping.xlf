@@ -26,10 +26,10 @@
             <trans-unit id="tl_iso_shipping.alternative_price_logic.1">
                 <source>Less that or greater than logic type.</source>
             </trans-unit>
-            <trans-unit id="tl_iso_shipping.alternative_price_logic_ref.0">
+            <trans-unit id="tl_iso_shipping.alternative_price_logic_ref.1">
                 <source>Whichever is less</source>
             </trans-unit>
-            <trans-unit id="tl_iso_shipping.alternative_price_logic_ref.1">
+            <trans-unit id="tl_iso_shipping.alternative_price_logic_ref.2">
                 <source>Whichever is greater</source>
             </trans-unit>
         </body>
