@@ -25,7 +25,7 @@
   "autoload": {
     "psr-0": {
       "IntelligentSpark\\": [
-        "library/"
+        "system/modules/isotope_shipping_zones_advanced/library/"
       ]
     }
   },
