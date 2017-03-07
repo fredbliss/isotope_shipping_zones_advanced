@@ -13,6 +13,8 @@
 namespace IntelligentSpark\Hooks;
 
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionSurcharge\Shipping;
 use Isotope\Template;
 
 class ShippingUpgrades {
@@ -21,8 +23,31 @@ class ShippingUpgrades {
      * @param $objCheckoutStep
      * @return void
      */
-    public function shippingMethodSubmit($objCheckoutStep) {
-        //\Input::post('shipping'));
+    public function shippingMethodSubmit($arrModules,$intModuleId) {
+        $varValue = current(\Input::post('shipping_upgrade'));
+
+        //this really is a very quick fix.  Re-design this!
+        foreach($arrModules as $module) {
+            if (strlen($module->upgrade_options) == 0)
+                continue;
+
+            $arrUpgrades = array();
+
+            $arrUpgrades = deserialize($module->upgrade_options, true);
+
+            $strSurchargeLabel = '';
+
+            foreach($arrUpgrades as $upgrade) {
+                if($upgrade['value']==$varValue)
+                    $arrUpgrade['value'] = $varValue;
+                    $arrUpgrade['label'] = $upgrade['label'];
+            }
+
+
+            Isotope::getCart()->shipping_upgrade = $arrUpgrade;
+
+        }
+
 
     }
 
@@ -31,28 +56,48 @@ class ShippingUpgrades {
      * @param $objShippingModule
      * @return string;
      */
-    public function getShippingUpgrades($objCheckoutStep,$intModuleId) {
+    public function getShippingUpgrades($arrModules,$intModuleId) {
 
         $objTemplate = new Template('iso_checkout_step_shipping_upgrades');
 
-        $arrUpgrades = array();
-        $arrModules = $objCheckoutStep->modules;
+        $arrUpgradeGroups = array();
 
         foreach($arrModules as $module) {
-            if(empty($module->upgrade_options))
+            if(strlen($module->upgrade_options)==0)
                 continue;
 
-            $arrUpgrade = array();
+            $arrUpgrades = array();
 
-            $arrUpgrade = deserialize($module->upgrade_options,true);
+            $arrUpgrades = deserialize($module->upgrade_options,true);
 
-            $arrUpgrades[] = $arrUpgrade;
+            $objTemplate->module_id = $intModuleId;
+            $objTemplate->options = $arrUpgrades;
+
+            $arrUpgradeGroups[$intModuleId] = $objTemplate->parse();
         }
 
-        $objTemplate->module_id = $intModuleId;
-        $objTemplate->options = $arrUpgrades;
+        return $arrUpgradeGroups;
+    }
 
-        return array();
+    public function findSurchargesForCollection($objCollection) {
+
+        if(empty(Isotope::getCart()->shipping_upgrade))
+            return array();
+
+        $arrShippingUpgrade = Isotope::getCart()->shipping_upgrade;
+
+        $objSurcharge = new \Isotope\Model\ProductCollectionSurcharge\Shipping;
+        $objSurcharge->label = $arrShippingUpgrade['label'];
+        $objSurcharge->price = $arrShippingUpgrade['value'];
+        $objSurcharge->total_price = $arrShippingUpgrade['value'];
+        $objSurcharge->tax_free_total_price = $arrShippingUpgrade['value'];
+        $objSurcharge->tax_class = false;
+        $objSurcharge->before_tax = false;
+        $objSurcharge->addToTotal = true;
+
+        $objSurcharge->save();
+
+        return array($objSurcharge);
     }
 
     public function preCheckout($objOrder, $objModule) {
@@ -60,5 +105,33 @@ class ShippingUpgrades {
         $objOrder->save();
         \System::log("delivery date as saved: ".$objOrder->delivery_date,__METHOD__,TL_GENERAL);
         return true;
+    }
+
+    /**
+     * Build a product collection surcharge for given class type
+     *
+     * @param string                         $strClass
+     * @param string                         $strLabel
+     * @param IsotopePayment|IsotopeShipping $objSource
+     * @param IsotopeProductCollection       $objCollection
+     *
+     * @return ProductCollectionSurcharge
+     */
+
+    protected function buildSurcharge($strClass, $strLabel, $intPrice, $objCollection)
+    {
+        $intTaxClass = false;
+
+        /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
+        $objSurcharge = new $strClass();
+        $objSurcharge->label = $strLabel;
+        $objSurcharge->price = $intPrice;
+        $objSurcharge->total_price = $intPrice;
+        $objSurcharge->tax_free_total_price = $intPrice;
+        $objSurcharge->tax_class = false;
+        $objSurcharge->before_tax = false;
+        $objSurcharge->addToTotal = true;
+
+        $objSurcharge->save();
     }
 }

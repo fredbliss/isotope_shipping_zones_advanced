@@ -15,3 +15,4 @@
 
 $GLOBALS['ISO_HOOKS']['shippingMethodSubmit'][] = ['IntelligentSpark\Hooks\ShippingUpgrades','shippingMethodSubmit'];
 $GLOBALS['ISO_HOOKS']['getShippingUpgrades'][] = ['IntelligentSpark\Hooks\ShippingUpgrades','getShippingUpgrades'];
+$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = ['IntelligentSpark\Hooks\ShippingUpgrades','findSurchargesForCollection'];

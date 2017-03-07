@@ -47,7 +47,8 @@ class ZonesAdvanced extends Shipping
 
         if($this->or_pricing=='1')
         {
-            $fltAltPrice = $objCollection->subTotal - ($objCollection->subTotal / (1 + (floatval($this->alternative_price) / 100)));
+            $fltAltPrice = $objCollection->getSubtotal() / 100 * floatval($this->alternative_price);
+
             switch($this->alternative_price_logic)
             {
                 case '1': //less
