@@ -24,8 +24,9 @@ class ShippingUpgrades {
      * @return void
      */
     public function shippingMethodSubmit($arrModules,$intModuleId) {
-        if(\Input::post('shipping_upgrade')==null)
-            return;
+
+        if(!\Input::post('shipping_upgrade'))
+            return false;
 
         $varValue = current(\Input::post('shipping_upgrade'));
 
@@ -41,13 +42,16 @@ class ShippingUpgrades {
             $strSurchargeLabel = '';
 
             foreach($arrUpgrades as $upgrade) {
-                if($upgrade['value']==$varValue)
+                if($upgrade['value']==$varValue && (int)$varValue>0) {
                     $arrUpgrade['value'] = $varValue;
                     $arrUpgrade['label'] = $upgrade['label'];
+                    Isotope::getCart()->shipping_upgrade = $arrUpgrade;
+                    return;
+                }
             }
 
+            return false;
 
-            Isotope::getCart()->shipping_upgrade = $arrUpgrade;
 
         }
 
@@ -84,7 +88,7 @@ class ShippingUpgrades {
 
     public function findSurchargesForCollection($objCollection) {
 
-        if(empty(Isotope::getCart()->shipping_upgrade))
+        if(!Isotope::getCart()->shipping_upgrade)
             return array();
 
         $arrShippingUpgrade = Isotope::getCart()->shipping_upgrade;
