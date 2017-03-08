@@ -24,6 +24,9 @@ class ShippingUpgrades {
      * @return void
      */
     public function shippingMethodSubmit($arrModules,$intModuleId) {
+        if(\Input::post('shipping_upgrade')==null)
+            return;
+
         $varValue = current(\Input::post('shipping_upgrade'));
 
         //this really is a very quick fix.  Re-design this!
