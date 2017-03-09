@@ -1,8 +1,10 @@
 <label for="ctrl_upgrade_<?php echo $this->module_id; ?>"></label>
 <fieldset id="ctrl_upgrade_<?php echo $this->module_id; ?>">
+<input name="shipping_upgrade[]" id="ctrl_shipping_upgrade_opt_0" class="radio" value="" type="radio" <?php echo ($this->blnSet===false ? 'checked' : ''); ?>>
+<label id="lbl_opt_0" for="ctrl_shipping_upgrade_opt_0">No Upgrade</label>
 <?php foreach($this->options as $i=>$option): ?>
-<input name="shipping_upgrade[]" id="ctrl_shipping_upgrade_opt_<?= $i ?>" class="radio" value="<?= $option['value']; ?>" type="radio">
-<label id="lbl_opt_<?= $i ?>" for="ctrl_shipping_upgrade_opt_<?= $i ?>"><?= $option['label']; ?></label>
+<input name="shipping_upgrade[]" id="ctrl_shipping_upgrade_opt_<?= $i+1; ?>" class="radio" value="<?= $option['value']; ?>" <?php echo ($option['checked']===true ? 'checked' : ''); ?> type="radio">
+<label id="lbl_opt_<?= $i+1; ?>" for="ctrl_shipping_upgrade_opt_<?= $i+1; ?>"><?= $option['label']; ?></label>
 <?php endforeach; ?>
 </fieldset>
 

@@ -25,10 +25,16 @@ class ShippingUpgrades {
      */
     public function shippingMethodSubmit($arrModules,$intModuleId) {
 
-        if(!\Input::post('shipping_upgrade'))
-            return false;
+        if(\Input::post('previousStep'))
+            return;
 
         $varValue = current(\Input::post('shipping_upgrade'));
+
+        //reset value;
+        if($varValue=='') {
+            Isotope::getCart()->shipping_upgrade = null;
+            return;
+        }
 
         //this really is a very quick fix.  Re-design this!
         foreach($arrModules as $module) {
@@ -50,9 +56,7 @@ class ShippingUpgrades {
                 }
             }
 
-            return false;
-
-
+            return;
         }
 
 
@@ -74,11 +78,26 @@ class ShippingUpgrades {
                 continue;
 
             $arrUpgrades = array();
+            $blnSet = false;    //indicator whether upgrade option is set or not
 
             $arrUpgrades = deserialize($module->upgrade_options,true);
 
+            foreach($arrUpgrades as $i=>$upgrade) {
+
+                //default setting
+                $arrUpgrades[$i]['checked'] = false;
+
+                //set option value
+                if($upgrade['value']==Isotope::getCart()->shipping_upgrade['value']) {
+
+                    $arrUpgrades[$i]['checked'] = true;
+                    $blnSet = true;
+                }
+            }
+
             $objTemplate->module_id = $intModuleId;
             $objTemplate->options = $arrUpgrades;
+            $objTemplate->blnSet = $blnSet;
 
             $arrUpgradeGroups[$intModuleId] = $objTemplate->parse();
         }
