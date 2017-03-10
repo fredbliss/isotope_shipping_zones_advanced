@@ -14,7 +14,6 @@ namespace IntelligentSpark\Model\Shipping;
 
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection as IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
@@ -26,14 +25,6 @@ use Isotope\Model\Shipping;
  */
 class ZonesAdvanced extends Shipping
 {
-    /**
-     * Returns the ID of this shipping method.
-     *
-     * @return int
-     */
-    public function getId() {
-        return $this->id;
-    }
 
     /**
      * Return calculated price for this shipping method
@@ -154,38 +145,6 @@ class ZonesAdvanced extends Shipping
         $objTemplate->shippingMethods = $this->modules;
 
         return $objTemplate->parse();
-    }
-
-    /**
-     * Return information or advanced features in the backend.
-     * Use this function to present advanced features or basic shipping information for an order in the backend.
-     * @param integer
-     * @return string
-     */
-    public function backendInterface($orderId) {
-
-    }
-
-    /**
-     * Return the checkout review information.
-     *
-     * Use this to return custom checkout information about this shipping module.
-     * Example: Information about tracking codes.
-     * @return string
-     */
-    public function checkoutReview() {
-
-    }
-
-    /**
-     * Get the checkout surcharge for this shipping method
-     *
-     * @param IsotopeProductCollection $objCollection
-     *
-     * @return Shipping|null
-     */
-    public function getSurcharge(IsotopeProductCollection $objCollection) {
-
     }
 
 }
